@@ -17,6 +17,12 @@ function reflect(element, name, meta) {
 
 function reflectProperty(element, name, meta) {
   try {
+    if (name[0] === '_' || name[name.length-1] === '_') {
+      return;
+    }
+    if (element.publish && element.publish[name] === undefined) {
+      return;
+    }
     var v = element[name];
     if (v !== null
         && v !== undefined
@@ -33,19 +39,23 @@ function reflectProperty(element, name, meta) {
 }
 
 reflectProperty.blacklist = {
-  EVENT_PREFIX: 1, DELEGATES: 1, PUBLISHED: 1,
-  INSTANCE_ATTRIBUTES: 1, PolymerBase: 1, STYLE_SCOPE_ATTRIBUTE: 1
+  EVENT_PREFIX: 1, 
+  DELEGATES: 1, 
+  PUBLISHED: 1,
+  INSTANCE_ATTRIBUTES: 1, 
+  PolymerBase: 1, 
+  STYLE_SCOPE_ATTRIBUTE: 1
 };
 
 function reflectProperties(element) {
   var props = [];
   if (element) {
     var found = {};
-    var p = element.__proto__;
     var meta = element.meta && element.meta.properties;
     var hep = designWindow.HTMLElement.prototype;
     var hiep = designWindow.HTMLInputElement.prototype;
-    // TODO(sjmiles): beware out-of-document `p` that will != HTMLElement.prototype
+    // TODO(sjmiles): beware alternate-window `p` that will != window.HTMLElement.prototype
+    var p = element.__proto__;
     while (p && !p.hasOwnProperty('PolymerBase') && p != hep && p != hiep) {
       var k = Object.keys(p);
       k.forEach(function(k) {
