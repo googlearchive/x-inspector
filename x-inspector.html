@@ -9,6 +9,31 @@ license that can be found in the LICENSE file.
 <link rel="import" href="../x-meta/x-meta.html">
 <script src="reflection.js"></script>
 
+<polymer-element name="x-style-inspector" attributes="sourceElement">
+  <template>
+    <template repeat="{{properties}}">
+      <x-property-inspector property="{{}}" nobind></x-property-inspector>
+    </template>
+    <x-meta id="meta">
+      <property name="backgroundColor" kind="color"></property>
+      <property name="opacity" kind="range" min="0" max="1" step="0.1" defaultvalue="1"></property>
+      <property name="border"></property>
+      <property name="width"></property>
+      <property name="height"></property>
+      <!-- <property name="test" kind="tk-compound-editor"></property> -->
+    </x-meta>
+  </template>
+  <script>
+    Polymer('x-style-inspector', {
+      properties: null,
+      sourceElementChanged: function() {
+        this.properties = Reflection.styles(this.sourceElement,
+          this.$.meta.properties);
+      }
+    });
+  </script>
+</polymer-element>
+
 <polymer-element name="x-inspector" attributes="sourceElement">
   <template>
     <link rel="stylesheet" href="x-inspector.css" />
@@ -75,31 +100,6 @@ license that can be found in the LICENSE file.
       },
       selectParentElement: function() {
         this.fire('parent-element');
-      }
-    });
-  </script>
-</polymer-element>
-
-<polymer-element name="x-style-inspector" attributes="sourceElement">
-  <template>
-    <template repeat="{{properties}}">
-      <x-property-inspector property="{{}}" nobind></x-property-inspector>
-    </template>
-    <x-meta id="meta">
-      <property name="backgroundColor" kind="color"></property>
-      <property name="opacity" kind="range" min="0" max="1" step="0.1" defaultvalue="1"></property>
-      <property name="border"></property>
-      <property name="width"></property>
-      <property name="height"></property>
-      <!-- <property name="test" kind="tk-compound-editor"></property> -->
-    </x-meta>
-  </template>
-  <script>
-    Polymer('x-style-inspector', {
-      properties: null,
-      sourceElementChanged: function() {
-        this.properties = Reflection.styles(this.sourceElement,
-          this.$.meta.properties);
       }
     });
   </script>
