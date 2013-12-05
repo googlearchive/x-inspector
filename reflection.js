@@ -47,6 +47,10 @@ reflectProperty.blacklist = {
   STYLE_SCOPE_ATTRIBUTE: 1
 };
 
+if (!window.designWindow) {
+  designWindow = window;
+}
+
 function reflectProperties(element) {
   var props = [];
   if (element) {
