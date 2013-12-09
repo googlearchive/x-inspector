@@ -99,20 +99,26 @@ function reflectProperties(element) {
   return props;
 }
 
-function reflectStyles(element, meta) {
+function reflectObject(obj, meta) {
   var props = [];
-  if (element && meta) {
-    var style = element.style;
+  if (obj && meta) {
     Object.keys(meta).forEach(function(name) {
-      props.push(reflect(style, name, meta));
+      props.push(reflect(obj, name, meta));
     });
   }
   return props;
 }
 
+function reflectStyles(element, meta) {
+  if (element) {
+    return reflectObject(element.style, meta);
+  }
+}
+
 window.Reflection = {
   properties: reflectProperties,
-  styles: reflectStyles
+  styles: reflectStyles,
+  object: reflectObject
 };
 
 })();
