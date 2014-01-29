@@ -111,7 +111,8 @@ function reflectObject(obj, meta) {
 
 function reflectStyles(element, meta) {
   if (element) {
-    return reflectObject(element.style, meta);
+    //return reflectObject(element.style, meta);
+    return reflectObject(element.__styleRule.style, meta);
   }
 }
 
